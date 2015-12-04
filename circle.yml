@@ -1,0 +1,39 @@
+machine:
+  services:
+    - docker
+
+checkout:
+  post:
+    - git clone https://github.com/WarriorMachines/warriormachines-shell-scripts.git
+
+dependencies:
+  pre:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS -e $DOCKER_EMAIL
+
+    - sudo pip install --upgrade awscli
+    - aws --version
+
+  post:
+    - chmod u+x ./warriormachines-shell-scripts/AWS/ECS/deploy.sh
+
+test:
+  pre:
+    - docker build --tag="warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM" .
+    - docker build --tag="warriormachines/warriormachines-php-fpm:latest" .
+
+deployment:
+  staging:
+    branch: [dev]
+    commands:
+      - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
+      - docker push warriormachines/warriormachines-php-fpm:latest
+
+      - ./warriormachines-shell-scripts/AWS/ECS/deploy.sh latest web-staging-cluster us-west-2 warriormachines-laravel-staging-service ./warriormachines-shell-scripts/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-staging-task-definition.json warriormachines-laravel-staging-task-definition warriormachines-laravel-staging-task-definition
+
+  production:
+    branch: [master]
+    commands:
+      - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
+      - docker push warriormachines/warriormachines-php-fpm:latest
+
+      - ./warriormachines-shell-scripts/AWS/ECS/deploy.sh latest web-production-cluster us-west-2 warriormachines-laravel-production-service ./warriormachines-shell-scripts/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-production-task-definition.json warriormachines-laravel-production-task-definition warriormachines-laravel-production-task-definition
