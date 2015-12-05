@@ -4,7 +4,7 @@ machine:
 
 checkout:
   post:
-    - git clone https://github.com/WarriorMachines/warriormachines-common.git
+    - git clone https://github.com/WarriorMachines/omnificent.git
 
 dependencies:
   pre:
@@ -14,7 +14,7 @@ dependencies:
     - aws --version
 
   post:
-    - chmod u+x ./warriormachines-common/AWS/ECS/deploy.sh
+    - chmod u+x ./omnificent/AWS/ECS/deploy.sh
 
 test:
   pre:
@@ -28,7 +28,7 @@ deployment:
       - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
       - docker push warriormachines/warriormachines-php-fpm:latest
 
-      - ./warriormachines-common/AWS/ECS/deploy.sh latest web-staging-cluster us-west-2 warriormachines-laravel-staging-service ./warriormachines-common/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-staging-task-definition.json warriormachines-laravel-staging-task-definition warriormachines-laravel-staging-task-definition
+      - ./omnificent/AWS/ECS/deploy.sh latest web-staging-cluster us-west-2 warriormachines-laravel-staging-service ./omnificent/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-staging-task-definition.json warriormachines-laravel-staging-task-definition warriormachines-laravel-staging-task-definition
 
   production:
     branch: [master]
@@ -36,4 +36,4 @@ deployment:
       - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
       - docker push warriormachines/warriormachines-php-fpm:latest
 
-      - ./warriormachines-common/AWS/ECS/deploy.sh latest web-production-cluster us-west-2 warriormachines-laravel-production-service ./warriormachines-common/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-production-task-definition.json warriormachines-laravel-production-task-definition warriormachines-laravel-production-task-definition
+      - ./omnificent/AWS/ECS/deploy.sh latest web-production-cluster us-west-2 warriormachines-laravel-production-service ./omnificent/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-production-task-definition.json warriormachines-laravel-production-task-definition warriormachines-laravel-production-task-definition
