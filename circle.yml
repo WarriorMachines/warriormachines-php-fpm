@@ -25,4 +25,4 @@ deployment:
       - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
       - docker push warriormachines/warriormachines-php-fpm:latest
 
-      - ./omnificent/AWS/ECS/deploy.sh latest web-production-cluster us-west-2 warriormachines-laravel-production-service ./omnificent/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-production-task-definition.json warriormachines-laravel-production-task-definition warriormachines-laravel-production-task-definition
+      - ./omnificent/AWS/ECS/deploy.sh latest web-production-cluster us-west-2 warriormachines-laravel-production-service ./omnificent/AWS/ECS/task-definitions/warriormachines-laravel/warriormachines-laravel-production-task-definition.json warriormachines-laravel-production-task-definition warriormachines-laravel-production-task-definition
