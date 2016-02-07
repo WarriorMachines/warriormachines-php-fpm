@@ -15,18 +15,10 @@ dependencies:
 
 test:
   pre:
-    - docker build --tag="warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM" .
-    - docker build --tag="warriormachines/warriormachines-php-fpm:latest" .
+    - docker build --tag="warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM" ./
+    - docker build --tag="warriormachines/warriormachines-php-fpm:latest" ./
 
 deployment:
-  staging:
-    branch: [dev]
-    commands:
-      - docker push warriormachines/warriormachines-php-fpm:v$CIRCLE_BUILD_NUM
-      - docker push warriormachines/warriormachines-php-fpm:latest
-
-      - ./omnificent/AWS/ECS/deploy.sh latest web-staging-cluster us-west-2 warriormachines-laravel-staging-service ./omnificent/AWS/ECS/task-definitions/warriormachines/warriormachines-laravel-staging-task-definition.json warriormachines-laravel-staging-task-definition warriormachines-laravel-staging-task-definition
-
   production:
     branch: [master]
     commands:
