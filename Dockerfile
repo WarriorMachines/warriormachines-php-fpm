@@ -1,6 +1,6 @@
 # warriormachines/warriormachines-php-fpm
 
-FROM php:5.6-fpm
+FROM php:5.6.18-fpm
 
 MAINTAINER "Austin Maddox" <austin@maddoxbox.com>
 
@@ -17,6 +17,12 @@ RUN apt-get install -y \
     libjpeg-dev \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && docker-php-ext-install gd
+
+# Install Imagick.
+RUN apt-get install -y \
+    libmagickwand-dev
+RUN pecl install imagick
+RUN docker-php-ext-enable imagick
 
 # If needed, add a custom php.ini configuration.
 COPY ./usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
