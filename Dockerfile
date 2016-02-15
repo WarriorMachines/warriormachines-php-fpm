@@ -18,8 +18,9 @@ RUN apt-get install -y \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && docker-php-ext-install gd
 
-# Install Imagick.
+# Install `ImageMagick` (Linux app) and `imagick` PHP extension.
 RUN apt-get install -y \
+    imagemagick \
     libmagickwand-dev
 RUN pecl install imagick
 RUN docker-php-ext-enable imagick
