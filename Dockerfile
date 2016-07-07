@@ -1,15 +1,17 @@
 # warriormachines/warriormachines-php-fpm
 
-FROM php:5.6.18-fpm
+FROM php:5.6-fpm
 
 MAINTAINER "Austin Maddox" <austin@maddoxbox.com>
 
 RUN apt-get update
 
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install mysql
-RUN docker-php-ext-install mysqli
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mbstring mysql mysqli pdo_mysql
+
+# Install PHP zipfile extension. (Adds ZipArchive class)
+RUN apt-get install -y \
+    zlib1g-dev \
+    && docker-php-ext-install zip
 
 # Install GD library.
 RUN apt-get install -y \
@@ -21,9 +23,9 @@ RUN apt-get install -y \
 # Install `ImageMagick` (Linux app) and `imagick` PHP extension.
 RUN apt-get install -y \
     imagemagick \
-    libmagickwand-dev
-RUN pecl install imagick
-RUN docker-php-ext-enable imagick
+    libmagickwand-dev \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
 
 # If needed, add a custom php.ini configuration.
 COPY ./usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
